@@ -1,2 +1,84 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+
+<h1 class='heading'>Hello and welcome to Jag's To Do program.</h1>
+<p> Hit the Create New task button to start generating your list</p>
+<br>
+<a href="/lists">Generate your List</a>
+<br>
+
+<h2>Active to do list</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Due</th>
+      <th>Done</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lists.each do |list| %>
+      <% if list.done != 'Completed' %>
+        <tr>
+          <td><%= list.task %></td>
+          <td><%= list.due %></td>
+          <td>
+            <%= form_for(list) do |f| %>
+              <%= f.hidden_field :done, value: 'Completed' %>
+              <%= f.submit 'Not Completed' %>
+            <% end %>
+          </td>
+          <td><%= link_to 'Show', list %></td>
+          <td><%= link_to 'Edit', edit_list_path(list) %></td>
+          <td><%= link_to 'Destroy', list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+function myFunction() {
+    document.getElementById("demo").innerHTML = "Yay Jay";
+    window.location.reload()
+}
+</script>
+
+<br>
+
+<%= link_to 'Create New Task', new_list_path %>
+
+<br>
+
+<h2>Archived list</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Due</th>
+      <th>Done</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lists.each do |list| %>
+      <% if list.done == 'Completed' %>
+        <tr>
+          <td><%= list.task %></td>
+          <td>
+            <%= form_for(list) do |f| %>
+              <%= f.hidden_field :done, value: 'Not Completed' %>
+              <%= f.submit 'Completed' %>
+            <% end %>
+          </td>
+          <td><%= link_to 'Show', list %></td>
+          <td><%= link_to 'Edit', edit_list_path(list) %></td>
+          <td><%= link_to 'Destroy', list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
